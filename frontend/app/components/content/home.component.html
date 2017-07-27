@@ -1,0 +1,14 @@
+<div id="app-header" fxLayout="row" fxLayoutAlign="center center">
+
+    <div fxFlex [fxFlex]="100" [fxFlex.gt-sm]="50">
+        <h1>
+            {{ 'APP_COMPONENT.OUTPUT_WELCOME' | translate }}
+        </h1>
+        <br/>
+        <br/>
+        <button #privateArea md-raised-button color="primary" [routerLink]="['/private-area']">
+            <md-icon class="md-24">lock</md-icon> {{ 'APP_COMPONENT.ACTION_BUTTON_PRIVATE_AREA' | translate }}
+        </button>
+    </div>
+
+</div>

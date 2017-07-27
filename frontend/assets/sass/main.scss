@@ -1,0 +1,112 @@
+// global variables and settings
+
+$app-colors-base: #ffffff;
+$app-colors-primary: #2962ff;
+$app-colors-primary-dark: #0d47a1;
+$app-colors-accent-1: #1de9b6;
+$app-colors-accent-2: #00c853;
+$app-colors-accent-3: #00b0ff;
+
+$app-colors-text-primary: #fff;
+$app-colors-text-inverted: #000;
+
+$app-fonts-primary:'Roboto', sans-serif;
+
+$app-xs: 'max-width: 599px';
+$app-sm: '(min-width: 600px) and (max-width: 959px)';
+$app-md: '(min-width: 960px) and (max-width: 1279px)';
+$app-lg: '(min-width: 1280px) and (max-width: 1919px)';
+$app-xl: '(min-width: 1920px) and (max-width: 5000px)';
+$app-lt-sm: 'max-width: 599px';
+$app-lt-md: 'max-width: 959px';
+$app-lt-lg: 'max-width: 1279px';
+$app-lt-xl: 'max-width: 1919px';
+$app-gt-xs: 'min-width: 600px';
+$app-gt-sm: 'min-width: 960px';
+$app-gt-md: 'min-width: 1280px';
+$app-gt-lg: 'min-width: 1920px';
+
+@mixin semi-large-text() {
+    font-weight: 300;
+    font-size: 30px;
+}
+
+
+
+// mat-theme & overrides
+
+@import 'node_modules/@angular/material/_theming.scss';
+@include mat-core();
+@include angular-material-theme(mat-light-theme(mat-palette($mat-blue, A700), mat-palette($mat-teal, A400), mat-palette($mat-pink, 500)));
+@include mat-input-theme(mat-light-theme(mat-palette($mat-blue, A700), mat-palette($mat-teal, A400), mat-palette($mat-pink, 500)));
+@include mat-button-theme(mat-light-theme(mat-palette($mat-blue, A700), mat-palette($mat-teal, A400), mat-palette($mat-pink, 500)));
+
+.mat-toolbar{
+  background: transparent;
+}
+.mat-input-container {
+  width: 100%;
+}
+.mat-sidenav-container {
+    background-color: $app-colors-base;
+}
+
+
+
+// app elements
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $app-fonts-primary;
+  text-align: center; 
+  color: $app-colors-primary;
+}
+
+.loading{
+  @extend body;
+  color: $app-colors-text-primary;
+  background: fixed linear-gradient(45deg, $app-colors-primary 30%, $app-colors-accent-3 60%, $app-colors-accent-1 80%);
+  .sign{
+    padding: 15%;
+    text-align:center;
+    font-weight: 700;
+    font-size: 175px;
+  }
+}
+
+#app-toolbar{
+
+  h1{
+    padding: 5px 0 0 0;
+    text-align:center;
+    color: $app-colors-primary;
+    @include semi-large-text(); 
+  }
+
+}
+
+#app-content{
+  margin: -64px 0 0 0;
+  padding: 84px 0 0 0;
+  height: calc(100% + 0px);
+  font-weight: 300;
+  font-size: 20px;
+  color: $app-colors-primary;
+}
+
+#app-header{
+  color: $app-colors-primary;
+  h1{
+    text-align:center;
+    font-weight: 700;
+    font-size: 100px;
+    background: linear-gradient(45deg, $app-colors-primary 20%, $app-colors-accent-3 70%, $app-colors-accent-1 90%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  h2{
+    @include semi-large-text();
+  }
+}

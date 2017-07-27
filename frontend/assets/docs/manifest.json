@@ -1,0 +1,13 @@
+{
+    "name": "angular-starter-pack",
+    "short_name": "asp",
+    "description": "Angular Starter Pack",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#2962ff",
+    "theme_color": "#2962ff",
+    "lang": "en-US",
+    "dir": "ltr"
+}

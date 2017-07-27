@@ -1,0 +1,63 @@
+<md-sidenav-container fullscreen>
+
+  <md-sidenav #sidebar>
+    <br/>
+    <button md-icon-button [routerLink]="['/home']" (click)="sidebar.close()" mdTooltipPosition="below"
+      mdTooltip="{{ 'APP_COMPONENT.ACTION_BUTTON_TOOLTIP_HOME' | translate }}">
+        <md-icon class="md-24" >home</md-icon>
+      </button>
+    <br/>
+    <md-nav-list>
+      <div md-list-item (click)="sidebar.close()">
+        <a md-list-item (click)="sidebar.close()" [routerLink]="['/home']">
+        {{ 'APP_COMPONENT.MENU_ITEM_HOME' | translate }}
+      </a>
+      </div>
+      <div md-list-item (click)="sidebar.close()">
+        <a md-list-item (click)="sidebar.close()" [routerLink]="['/private-area']">
+        {{ 'APP_COMPONENT.MENU_ITEM_PRIVATE_AREA' | translate }}
+      </a>
+      </div>
+      <div md-list-item (click)="sidebar.close()">
+        <a md-list-item (click)="sidebar.close()" [routerLink]="['/login']">
+        {{ 'APP_COMPONENT.MENU_ITEM_LOGIN' | translate }}
+      </a>
+      </div>
+    </md-nav-list>
+    <button md-button (click)="sidebar.close()">
+      {{ 'APP_COMPONENT.ACTION_BUTTON_CLOSE_SIDEBAR' | translate }}
+    </button>
+    <br/> <br/>
+    <md-divider></md-divider>
+    <br/> &copy; 2017
+  </md-sidenav>
+
+  <md-toolbar id="app-toolbar">
+    <div fxLayout="row" fxLayoutWrap fxLayoutAlign="center center" style="width:100%">
+
+      <div fxFlex [fxFlex.gt-xs]="20" [fxFlex]="50" fxLayoutAlign="start center">
+        <button color="primary" md-icon-button (click)="sidebar.open()" mdTooltipPosition="below"
+          mdTooltip="{{ 'APP_COMPONENT.ACTION_BUTTON_TOOLTIP_MENU' | translate }}">
+          <md-icon class="md-24">menu</md-icon>
+        </button>
+      </div>
+
+      <div id="app-logo" fxFlex [fxFlex.gt-xs]="60" [fxFlex]="80" fxLayoutAlign="center center">
+        <h1 [routerLink]="['/home']">{{ 'APP_COMPONENT.OUTPUT_TITLE' | translate }}</h1>
+      </div>
+
+      <div xFlex [fxFlex.gt-xs]="20" [fxFlex]="50" fxLayoutAlign="end center">
+        <button color="primary" md-icon-button (click)="checkStatus()" mdTooltipPosition="below"
+          mdTooltip="{{ 'APP_COMPONENT.ACTION_BUTTON_TOOLTIP_LOGIN' | translate }}">
+          <md-icon class="md-24">exit_to_app</md-icon>
+        </button>
+      </div>
+
+    </div>
+  </md-toolbar>
+
+  <div id="app-content">
+    <router-outlet></router-outlet>
+  </div>
+
+</md-sidenav-container>
