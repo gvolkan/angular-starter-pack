@@ -1,0 +1,33 @@
+{
+  "APP_INFO_SERVICE": {
+    "SNACKBAR_ACTION_BUTTON_CLOSE": "Close",
+    "SNACKBAR_ACTION_BUTTON_OK": "OK"
+  },
+  "APP_FORM_VALIDATION": {
+    "REQUIRED": "{0} is required.",
+    "MIN_LENGTH": "{0} must be at least {1} characters long.",
+    "MAX_LENGTH": "{0} cannot be more than {1} characters long."
+  },
+  "APP_COMPONENT": {
+    "OUTPUT_TITLE": "Angular Starter Pack",
+    "OUTPUT_WELCOME": "WELCOME",
+    "OUTPUT_LOGOUT_SUCCESS": "You successfully logged out.",
+    "MENU_ITEM_HOME": "HOME",
+    "MENU_ITEM_PRIVATE_AREA": "PRIVATE AREA",
+    "MENU_ITEM_LOGIN": "LOGIN",
+    "ACTION_BUTTON_PRIVATE_AREA": "PRIVATE AREA",
+    "ACTION_BUTTON_TOOLTIP_HOME": "HOME",
+    "ACTION_BUTTON_TOOLTIP_MENU": "MENU",
+    "ACTION_BUTTON_TOOLTIP_LOGIN": "LOGIN",
+    "ACTION_BUTTON_CLOSE_SIDEBAR": "CLOSE"
+  },
+  "APP_COMPONENT_LOGIN": {
+    "OUTPUT_LOGIN_FAILURE": "Wrong password or username. Please try again.",
+    "INPUT_PLACEHOLDER_USERNAME_EMAIL": "Username or Email (Test data: admin)",
+    "INPUT_PLACEHOLDER_PASSWORD": "Password (Test data: test123)",
+    "ACTION_BUTTON_LOGIN": "LOGIN"
+  },
+  "APP_COMPONENT_PRIVATE_AREA": {
+    "OUTPUT_MESSAGE": "PRIVATE AREA!"
+  }
+}

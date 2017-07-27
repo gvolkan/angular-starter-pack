@@ -1,0 +1,38 @@
+<div id="app-login" fxLayout="row" fxLayoutAlign="center start" fxLayoutAlign.xs="center start">
+  <div fxFlex [fxFlex]="100" [fxFlex.gt-xs]="80" [fxFlex.gt-sm]="50" [fxFlex.gt-md]="30">
+    <form novalidate [formGroup]="authUserForm">
+      <md-card>
+        <md-card-content>
+
+          <md-input-container>
+            <input mdInput placeholder="{{ 'APP_COMPONENT_LOGIN.INPUT_PLACEHOLDER_USERNAME_EMAIL' | translate }}"
+              #username required formControlName="username" name="username" [(ngModel)]="authUser.username"
+            />
+            <md-hint *ngIf="formErrors.username" align="end">
+              {{ formErrors.username }}
+            </md-hint>
+          </md-input-container>
+          <md-input-container>
+            <input mdInput required placeholder="{{ 'APP_COMPONENT_LOGIN.INPUT_PLACEHOLDER_PASSWORD' | translate }}"
+              type="password" #password formControlName="password" name="password"
+              [(ngModel)]="authUser.password" />
+            <md-hint *ngIf="formErrors.password" align="end">
+              {{ formErrors.password }}
+            </md-hint>
+          </md-input-container>
+          <div align="center">
+            <button md-raised-button (click)="logIn()" color="primary">
+              {{ 'APP_COMPONENT_LOGIN.ACTION_BUTTON_LOGIN' | translate }}
+            </button>
+          </div>
+
+        </md-card-content>
+        <md-card-footer>
+
+          <md-progress-bar mode="indeterminate" #progressBar *ngIf="authProgress"></md-progress-bar>
+
+        </md-card-footer>
+      </md-card>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+Thumbs.db
+.*.swp
+.DS_Store
+._*
+*.log
+*.orig
+
+backend/storage/
+!backend/storage/.gitkeep
+
+/deploy.env
