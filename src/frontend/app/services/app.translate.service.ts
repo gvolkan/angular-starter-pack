@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { TranslateService } from '@ngx-translate/core';
+import * as _object from "lodash/object";
 
 @Injectable()
 export class AppTranslateService {
@@ -29,32 +30,27 @@ export class AppTranslateService {
     }
 
     getTranslation(findKey: string) {
-        for (const key in this.translations) {
-            if (this.translations.hasOwnProperty(key)) {
-                if (findKey === key) {
-                    return this.translations[key];
-                }
+        let result: string = '';
+        _object.forIn(this.translations, function (translation, translationKey) {
+            if (translationKey === findKey) {
+                result = translation;
             }
-        }
-        return '';
+        });
+        return result;
     }
 
     initTranslations(): Promise<any> {
+        const thisRef = this;
         return this.http.get('/assets/i18n/' + this.currentLanguage + '.json')
             .map(res => res.json())
             .toPromise()
             .then(foundTranslations => {
-                for (const groupKey in foundTranslations) {
-                    if (foundTranslations.hasOwnProperty(groupKey)) {
-                        for (const key in foundTranslations[groupKey]) {
-                            if (foundTranslations[groupKey].hasOwnProperty(key)) {
-                                let newKey = groupKey + '.' + key;
-                                let newValue = foundTranslations[groupKey][key];
-                                this.translations[newKey] = newValue;
-                            }
-                        }
-                    }
-                }
+                _object.forIn(foundTranslations, function (translationGroup, translationGroupKey) {
+                    _object.forIn(translationGroup, function (translation, translationKey) {
+                        let newKey = translationGroupKey + '.' + translationKey;
+                        thisRef.translations[newKey] = translation;
+                    });
+                });
                 return this.translations;
             });
     }

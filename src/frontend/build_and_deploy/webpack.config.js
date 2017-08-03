@@ -3,13 +3,13 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    'app.polyfills': './frontend/app/app.polyfills.ts',
-    'app': './frontend/app/app.ts',
+    'app.polyfills': './src/frontend/app/app.polyfills.ts',
+    'app': './src/frontend/app/app.ts',
   },
 
   output: {
     publicPath: '/assets/webpack',
-    path: path.resolve(__dirname, './../../deploy/frontend/assets/webpack'),
+    path: path.resolve(__dirname, './../../../dist/frontend/assets/webpack'),
     pathinfo: true,
     filename: '[name].js',
     sourceMapFilename: '[name].map',
@@ -43,7 +43,7 @@ module.exports = {
 
   resolve: {
     extensions: ['.ts', '.js'],
-    modules: [path.resolve(__dirname, './../../node_modules')]
+    modules: [path.resolve(__dirname, './../../../node_modules')]
   },
 
   node: {

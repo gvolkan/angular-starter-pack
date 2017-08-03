@@ -11,14 +11,14 @@ package-lock.json
 
 /node_modules/
 
-/deploy/backend
-/deploy/frontend
-/deploy/.git
-/deploy/package.json
-!/deploy/deploy.sh
-!/deploy/deploy-EXAMPLE.env
-!/deploy/.gitignore
+/dist/backend
+/dist/frontend
+/dist/.git
+/dist/package.json
+!/dist/deploy.sh
+!/dist/deploy-EXAMPLE.env
+!/dist/.gitignore
 
 /.nyc_output/
-/frontend_tests/coverage/
-/backend_tests/coverage/
+/tests/frontend/coverage/
+/tests/backend/coverage/

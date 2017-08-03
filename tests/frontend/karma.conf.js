@@ -5,12 +5,12 @@ module.exports = function (config) {
     config.set({
         basePath: '',
         proxies: {
-            '/assets/i18n/': path.resolve(__dirname, './../frontend/assets/i18n') + '/'
+            '/assets/i18n/': path.resolve(__dirname, './../../src/frontend/assets/i18n') + '/'
         },
         files: [
             { pattern: './karma.context.js', included: true, served: true, watched: false },
-            { pattern: './../frontend/assets/i18n/**', included: false, served: true, watched: false },
-            { pattern: './../node_modules/@angular/material/prebuilt-themes/indigo-pink.css', included: true, served: true, watched: false },
+            { pattern: './../../src/frontend/assets/i18n/**', included: false, served: true, watched: false },
+            { pattern: './../../node_modules/@angular/material/prebuilt-themes/indigo-pink.css', included: true, served: true, watched: false },
         ],
         preprocessors: {
             './karma.context.js': ['webpack', 'sourcemap'],

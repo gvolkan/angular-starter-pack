@@ -15,13 +15,13 @@ const gulpOpen = require("gulp-open");
 const gulpProtractor = require("gulp-protractor");
 
 const webpack = require('webpack');
-const frontendDevWebpackConfig = require('./frontend/build_and_deploy/webpack.dev.config.js');
-const frontendProdWebpackConfig = require('./frontend/build_and_deploy/webpack.prod.config.js');
+const frontendDevWebpackConfig = require('./src/frontend/build_and_deploy/webpack.dev.config.js');
+const frontendProdWebpackConfig = require('./src/frontend/build_and_deploy/webpack.prod.config.js');
 
 let appServerProcess = null;
 
 gulp.doneCallback = function (err) {
-    console.log("GULP: Done");
+    //console.log("GULP: Done");
     if (err) {
         console.log("GULP: Error " + JSON.stringify(err));
         process.exit(err ? 1 : 0);
@@ -46,11 +46,9 @@ function syncBrowser(proxy_url) {
         online: false
     });
 };
-
 gulp.task('all:browser_sync', function () {
     syncBrowser("http://localhost:" + String(process.env.APP_SERVER_PORT) + "/");
 });
-
 gulp.task('all:browser_sync:reload', function () {
     browserSync.reload({ stream: false });
 });
@@ -60,31 +58,31 @@ gulp.task('all:browser_sync:reload', function () {
 gulp.task("all-misc:copy", () => {
     return gulp.src([
         "./package.json",
-    ]).pipe(gulp.dest("./deploy/"));
+    ]).pipe(gulp.dest("./dist/"));
 });
 
 // -------------------------------------------------------------------------
 
 gulp.task('backend:clean', (cb) => {
     return del([
-        "./deploy/backend/build_and_deploy",
-        "./deploy/backend/infrastructure",
-        "./deploy/backend/kpassage",
-        "./deploy/backend/static",
-        "./deploy/backend/app.routes.ts",
-        "./deploy/backend/app.server.ts",
-        "./deploy/backend/app.ts",
+        "./dist/backend/build_and_deploy",
+        "./dist/backend/infrastructure",
+        "./dist/backend/kpassage",
+        "./dist/backend/static",
+        "./dist/backend/app.routes.ts",
+        "./dist/backend/app.server.ts",
+        "./dist/backend/app.ts",
     ], cb);
 });
 gulp.task("backend-misc:copy", () => {
     return gulp.src([
-        "backend/**/*",
+        "./src/backend/**/*",
         "!**/*.ts"
-    ]).pipe(gulp.dest("./deploy/backend"));
+    ]).pipe(gulp.dest("./dist/backend"));
 });
 gulp.task('backend-ts:tslint', () => {
     return gulp.src([
-        "backend/**/*.ts"
+        "./src/backend/**/*.ts"
     ]).pipe(gulpTSLint({
         formatter: "prose"
     })).pipe(gulpTSLint.report());
@@ -92,7 +90,7 @@ gulp.task('backend-ts:tslint', () => {
 gulp.task('backend-ts:build_min_copy', ["backend-ts:tslint"], function () {
     const tsConfig = gulpTS.createProject('./tsconfig.json');
     const tsResult = gulp.src([
-        'backend/**/*.ts'
+        './src/backend/**/*.ts'
     ]).pipe(gulpSourcemaps.init())
         .pipe(tsConfig());
     return tsResult.js
@@ -100,11 +98,11 @@ gulp.task('backend-ts:build_min_copy', ["backend-ts:tslint"], function () {
             console.log("GULP: Error: " + e);
         }))
         .pipe(gulpSourcemaps.write())
-        .pipe(gulp.dest('./deploy/backend'));
+        .pipe(gulp.dest('./dist/backend'));
 });
 gulp.task('backend-ts:watch', function () {
     gulp.watch([
-        "backend/**/*.ts"
+        "./src/backend/**/*.ts"
     ], ['backend-ts:build_min_copy']
     ).on('change', function (e) {
         console.log('GULP: Changed: ' + e.path);
@@ -113,9 +111,9 @@ gulp.task('backend-ts:watch', function () {
 gulp.task('backend:start', function () {
     let restartStatus = false;
     return gulpNodemon({
-        script: './deploy/backend/app.server'
+        script: './dist/backend/app.server'
         , ext: 'html js css scss ts json txt ico png'
-        , watch: 'frontend'
+        , watch: './src/backend'
         , tasks: function (changedFiles) {
             const tasks = [];
             changedFiles.forEach(function (file) {
@@ -167,7 +165,7 @@ gulp.task('infrastructure:testing:driver-update', () => { return gulpProtractor[
 gulp.task('backend:e2e:setup', function () {
     console.log('GULP: E2E Started');
     const spawn = require('child_process').spawn;
-    appServerProcess = spawn('node', ['./deploy/backend/app.server'], { stdio: 'inherit' });
+    appServerProcess = spawn('node', ['./dist/backend/app.server'], { stdio: 'inherit' });
 });
 gulp.task('backend:e2e:cleaning', function () {
     console.log('GULP: E2E Finished');
@@ -176,9 +174,9 @@ gulp.task('backend:e2e:cleaning', function () {
     process.exit();
 });
 gulp.task('backend:e2e:testing', function () {
-    return gulp.src('./backend_tests/**/*.e2e.ts')
+    return gulp.src('./tests/backend/**/*.e2e.ts')
         .pipe(gulpProtractor.protractor({
-            configFile: './backend_tests/protractor.conf.ts',
+            configFile: './tests/backend/protractor.conf.ts',
             args: []
         }))
         .on('error', function (e) {
@@ -198,18 +196,18 @@ gulp.task('backend:e2e', function () {
 });
 
 gulp.task("backend_tests:open_coverage", () => {
-    gulp.src("./backend_tests/coverage/html/index.html")
-        .pipe(gulpOpen());
+    gulp.src("./tests/backend/coverage/html/index.html")
+        .pipe(gulpOpen({app: 'firefox'}));
 });
 
 // -------------------------------------------------------------------------
 
 gulp.task('frontend:clean', (cb) => {
-    return del(["./deploy/frontend"], cb);
+    return del(["./dist/frontend"], cb);
 });
 gulp.task('frontend:tslint', () => {
     return gulp.src([
-        "frontend/**/*.ts"
+        "./src/frontend/**/*.ts"
     ]).pipe(gulpTSLint({
         formatter: "prose"
     })).pipe(gulpTSLint.report());
@@ -217,13 +215,13 @@ gulp.task('frontend:tslint', () => {
 gulp.task('frontend:webpack', ["frontend:tslint"], function (callback) {
     if (process.env.NODE_ENV === 'production') {
         webpack(frontendProdWebpackConfig, function (err, stats) {
-            console.log('GULP: Webpack ', stats.toString({
+            console.log('GULP: Webpack prod ', stats.toString({
             }));
             callback();
         });
     } else {
         webpack(frontendDevWebpackConfig, function (err, stats) {
-            console.log('GULP: Webpack ', stats.toString({
+            console.log('GULP: Webpack dev ', stats.toString({
             }));
             callback();
         });
@@ -231,65 +229,65 @@ gulp.task('frontend:webpack', ["frontend:tslint"], function (callback) {
 });
 gulp.task("frontend-html:min_copy", () => {
     const sources = [
-        "frontend/**/*.html",
-        "frontend/**/*.htm",
-        '!frontend/app{,/**}'
+        "./src/frontend/**/*.html",
+        "./src/frontend/**/*.htm",
+        '!./src/frontend/app{,/**}'
     ];
     return gulp.src(sources, { nodir: true })
         .pipe(gulpHtmlmin({ collapseWhitespace: true }))
-        .pipe(gulp.dest("./deploy/frontend"));
+        .pipe(gulp.dest("./dist/frontend"));
 });
 gulp.task("frontend-misc:copy", () => {
     let sources = [
-        "frontend/**/*",
-        "!frontend/**/*.html",
-        "!frontend/**/*.htm",
-        "!frontend/**/*.js",
-        "!frontend/**/*.scss",
-        "!frontend/**/*.ts"
+        "./src/frontend/**/*",
+        "!./src/frontend/**/*.html",
+        "!./src/frontend/**/*.htm",
+        "!./src/frontend/**/*.js",
+        "!./src/frontend/**/*.scss",
+        "!./src/frontend/**/*.ts"
     ];
     if (process.env.NODE_ENV === 'production') {
-        sources = sources.concat("!frontend/build_and_deploy{,/**}");
-        sources = sources.concat("!frontend/app{,/**}");
+        sources = sources.concat("!./src/frontend/build_and_deploy{,/**}");
+        sources = sources.concat("!./src/frontend/app{,/**}");
     }
     return gulp.src(sources, { nodir: true })
-        .pipe(gulp.dest("./deploy/frontend"));
+        .pipe(gulp.dest("./dist/frontend"));
 });
 gulp.task("frontend-js:min_copy", () => {
     const sources = [
-        "frontend/**/*.js",
-        "!frontend/build_and_deploy{,/**}",
-        "!frontend/app{,/**}"
+        "./src/frontend/**/*.js",
+        "!./src/frontend/build_and_deploy{,/**}",
+        "!./src/frontend/app{,/**}"
     ];
     if (process.env.NODE_ENV === 'production') {
         return gulp.src(sources)
             .pipe(gulpUglify().on('error', function (e) {
                 console.log("GULP: Error: " + e);
             }))
-            .pipe(gulp.dest("./deploy/frontend"));
+            .pipe(gulp.dest("./dist/frontend"));
     } else {
         return gulp.src(sources)
-            .pipe(gulp.dest("./deploy/frontend"));
+            .pipe(gulp.dest("./dist/frontend"));
     }
 });
 gulp.task("frontend-i18n:copy", () => {
     return gulp.src([
-        "frontend/assets/i18n/**/*.json"
-    ]).pipe(gulp.dest("./deploy/frontend/assets/i18n"));
+        "./src/frontend/assets/i18n/**/*.json"
+    ]).pipe(gulp.dest("./dist/frontend/assets/i18n"));
 });
 gulp.task('frontend-sass:min_copy', function () {
     return gulp.src([
-        './frontend/assets/sass/**/*.scss'
+        './src/frontend/assets/sass/**/*.scss'
     ]).pipe(gulpSass({ outputStyle: 'compressed' })
         .on('error', gulpSass.logError))
-        .pipe(gulp.dest('././deploy/frontend/assets/css'));
+        .pipe(gulp.dest('././dist/frontend/assets/css'));
 });
 
 // -------------------------------------------------------------------------
 
 gulp.task("frontend_tests:open_coverage", () => {
-    gulp.src("./frontend_tests/coverage/html/index.html")
-        .pipe(gulpOpen());
+    gulp.src("./tests/frontend/coverage/html/index.html")
+        .pipe(gulpOpen({app: 'firefox'}));
 });
 
 // -------------------------------------------------------------------------
