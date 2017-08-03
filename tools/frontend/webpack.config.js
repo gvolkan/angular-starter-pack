@@ -9,7 +9,7 @@ module.exports = {
 
   output: {
     publicPath: '/assets/webpack',
-    path: path.resolve(__dirname, './../../../dist/frontend/assets/webpack'),
+    path: path.resolve(__dirname, './../../dist/frontend/assets/webpack'),
     pathinfo: true,
     filename: '[name].js',
     sourceMapFilename: '[name].map',
@@ -43,7 +43,7 @@ module.exports = {
 
   resolve: {
     extensions: ['.ts', '.js'],
-    modules: [path.resolve(__dirname, './../../../node_modules')]
+    modules: [path.resolve(__dirname, './../../node_modules')]
   },
 
   node: {
