@@ -19,5 +19,5 @@ angularTesting.TestBed.initTestEnvironment(
   angularPBD.platformBrowserDynamicTesting()
 );
 
-const specs = require.context('./../frontend/', true, /\.spec\.ts/);
+const specs = require.context('./../../tests/frontend/spec/', true, /\.spec\.ts/);
 specs.keys().forEach(specs);

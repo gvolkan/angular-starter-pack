@@ -43,7 +43,7 @@ module.exports = {
   plugins: [
     new ContextReplacementPlugin(
       /angular(\\|\/)core(\\|\/)@angular/,
-      path.resolve(__dirname, './../frontend')
+      path.resolve(__dirname, './../../src/frontend')
     )
   ],
   performance: {

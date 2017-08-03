@@ -42,20 +42,24 @@
   "scripts": {
     "preinstall": "",
     "postinstall": "./node_modules/protractor/bin/webdriver-manager update",
-    "start": ". ./dev.env && gulp all:deploy_local",
-    "all:build_dev": ". ./dev.env && gulp all:clean && gulp all:build_dev",
-    "all:build_dev_deploy_local": ". ./dev.env && gulp all:clean && gulp all:build_dev && gulp all:deploy_local",
-    "all:build_prod": ". ./dev.env && gulp all:clean && gulp all:build_prod",
-    "backend:test": ". ./dev.env && NODE_ENV=testing && ./node_modules/.bin/mocha --compilers ts:ts-node/register backend/**/*.spec.ts",
-    "backend:test-coverage": ". ./dev.env && NODE_ENV=testing && nyc npm run backend:test",
-    "backend:test-coverage-open": ". ./dev.env && NODE_ENV=testing && nyc npm run backend:test && gulp backend_tests:open_coverage",
-    "backend:e2e": ". ./dev.env && NODE_ENV=testing && gulp backend:e2e",
-    "frontend:test": ". ./dev.env && NODE_ENV=testing && ./node_modules/.bin/karma start ./frontend_tests/karma.conf.js",
-    "frontend:test-coverage-open": ". ./dev.env && NODE_ENV=testing && npm run frontend:test && gulp frontend_tests:open_coverage"
+    "start": ". ./dev.env && cross-env NODE_ENV=development npm-run-all all:deploy_local",
+    "all:build_dev": ". ./dev.env && cross-env NODE_ENV=development npm-run-all all:clean all:gulp_build_dev",
+    "all:build_dev_deploy_local": ". ./dev.env && cross-env NODE_ENV=development npm-run-all all:clean all:gulp_build_dev all:deploy_local",
+    "all:build_prod": ". ./dev.env && cross-env NODE_ENV=production npm-run-all all:clean all:gulp_build_prod",
+    "all:clean": "gulp all:clean",
+    "all:deploy_local": "gulp all:deploy_local",
+    "all:gulp_build_dev": "gulp all:build_dev",
+    "all:gulp_build_prod": "gulp all:build_prod",
+    "backend:test": ". ./dev.env && cross-env NODE_ENV=testing ./node_modules/.bin/mocha --compilers ts:ts-node/register ./tests/backend/spec/**/*.spec.ts",
+    "backend:test-coverage": ". ./dev.env && cross-env NODE_ENV=testing nyc npm run backend:test",
+    "backend:test-coverage-open": ". ./dev.env && cross-env NODE_ENV=testing nyc npm run backend:test && gulp backend_tests:open_coverage",
+    "backend:e2e": ". ./dev.env && cross-env NODE_ENV=testing gulp backend:e2e",
+    "frontend:test": ". ./dev.env && cross-env NODE_ENV=testing ./node_modules/.bin/karma start ./tests/frontend/karma.conf.js",
+    "frontend:test-coverage-open": ". ./dev.env && cross-env NODE_ENV=testing npm run frontend:test && gulp frontend_tests:open_coverage"
   },
   "nyc": {
     "include": [
-      "backend/**/*.ts"
+      "src/backend/**/*.ts"
     ],
     "extension": [
       ".ts"
@@ -69,7 +73,7 @@
     ],
     "all": true,
     "instrument": true,
-    "report-dir": "backend_tests/coverage/html"
+    "report-dir": "tests/backend/coverage/html"
   },
   "dependencies": {
     "@angular/animations": "~4.2.6",
@@ -97,6 +101,7 @@
     "cookie-parser": "~1.4.3",
     "cookie-session": "~2.0.0-beta.2",
     "core-js": "~2.4.1",
+    "cross-env": "^5.0.2",
     "express": "~4.15.3",
     "express-graphql": "~0.6.6",
     "express-session": "~1.15.3",
@@ -105,9 +110,11 @@
     "gulp-protractor": "~4.1.0",
     "hammerjs": "~2.0.8",
     "helmet": "~3.6.1",
+    "lodash": "~4.17.4",
     "mongoose": "~4.10.8",
     "multer": "~1.3.0",
     "node-uuid": "~1.4.7",
+    "npm-run-all": "^4.0.2",
     "passport": "~0.3.2",
     "passport-jwt": "~2.2.1",
     "passport-local": "~1.0.0",
@@ -124,6 +131,7 @@
     "@types/gulp": "~4.0.4",
     "@types/hammerjs": "~2.0.33",
     "@types/helmet": "~0.0.35",
+    "@types/lodash": "~4.14.71",
     "@types/mocha": "~2.2.41",
     "@types/mongoose": "~4.7.18",
     "@types/multer": "~0.0.32",
@@ -167,7 +175,7 @@
     "karma-sourcemap-loader": "~0.3.7",
     "karma-webpack": "~2.0.4",
     "mocha": "~3.4.2",
-    "nyc": "~11.0.3",
+    "nyc": "~11.1.0",
     "optimize-js-plugin": "~0.0.4",
     "protractor": "~5.1.2",
     "raw-loader": "~0.5.1",

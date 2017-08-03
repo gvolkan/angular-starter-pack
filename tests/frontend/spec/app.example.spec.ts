@@ -18,8 +18,8 @@ const expect = chai.expect;
 chai.use(chaiAsPromise);
 chai.use(sinonChai);
 
-import { AppComponent } from './app.component';
-import { AppModule } from './app.module';
+import { AppComponent } from './../../../src/frontend/app/app.component';
+import { AppModule } from './../../../src/frontend/app/app.module';
 
 describe(`App - EXAMPLE ANGULAR TESTS`, () => {
     let component: AppComponent;

@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 chai.use(chaiAsPromise);
 chai.use(sinonChai);
 
-import { StringHelper } from "./infrastructure/helpers/string.helper";
+import { StringHelper } from "./../../../src/backend/infrastructure/helpers/string.helper";
 
 describe('App - EXAMPLE UNIT TESTS', () => {
 
