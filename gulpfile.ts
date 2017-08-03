@@ -15,8 +15,8 @@ const gulpOpen = require("gulp-open");
 const gulpProtractor = require("gulp-protractor");
 
 const webpack = require('webpack');
-const frontendDevWebpackConfig = require('./src/frontend/build_and_deploy/webpack.dev.config.js');
-const frontendProdWebpackConfig = require('./src/frontend/build_and_deploy/webpack.prod.config.js');
+const frontendDevWebpackConfig = require('./tools/frontend/webpack.dev.config.js');
+const frontendProdWebpackConfig = require('./tools/frontend/webpack.prod.config.js');
 
 let appServerProcess = null;
 
@@ -65,7 +65,6 @@ gulp.task("all-misc:copy", () => {
 
 gulp.task('backend:clean', (cb) => {
     return del([
-        "./dist/backend/build_and_deploy",
         "./dist/backend/infrastructure",
         "./dist/backend/kpassage",
         "./dist/backend/static",
@@ -215,13 +214,13 @@ gulp.task('frontend:tslint', () => {
 gulp.task('frontend:webpack', ["frontend:tslint"], function (callback) {
     if (process.env.NODE_ENV === 'production') {
         webpack(frontendProdWebpackConfig, function (err, stats) {
-            console.log('GULP: Webpack prod ', stats.toString({
+            console.log('GULP: Webpack PROD ', stats.toString({
             }));
             callback();
         });
     } else {
         webpack(frontendDevWebpackConfig, function (err, stats) {
-            console.log('GULP: Webpack dev ', stats.toString({
+            console.log('GULP: Webpack DEV ', stats.toString({
             }));
             callback();
         });
@@ -247,7 +246,6 @@ gulp.task("frontend-misc:copy", () => {
         "!./src/frontend/**/*.ts"
     ];
     if (process.env.NODE_ENV === 'production') {
-        sources = sources.concat("!./src/frontend/build_and_deploy{,/**}");
         sources = sources.concat("!./src/frontend/app{,/**}");
     }
     return gulp.src(sources, { nodir: true })
@@ -256,7 +254,6 @@ gulp.task("frontend-misc:copy", () => {
 gulp.task("frontend-js:min_copy", () => {
     const sources = [
         "./src/frontend/**/*.js",
-        "!./src/frontend/build_and_deploy{,/**}",
         "!./src/frontend/app{,/**}"
     ];
     if (process.env.NODE_ENV === 'production') {
