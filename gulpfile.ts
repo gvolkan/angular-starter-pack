@@ -39,7 +39,7 @@ function syncBrowser(proxy_url) {
     browserSync.init(null, {
         proxy: proxy_url,
         reloadDelay: 500,
-        browser: "chromium-browser",
+        browser: "firefox",
         port: String(process.env.APP_SERVER_PORT_BS),
         logLevel: "debug",
         server: false,
