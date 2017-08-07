@@ -20,7 +20,8 @@
 npm install
 ```
 ```
-# clean dist dir, start dev build, start backend server and use browser-sync to load webpage in Firefox browser
+# clean dist dir, start dev build, start backend server
+# use browser-sync to load webpage in Firefox browser
 npm run all:build_dev_deploy_local
 ```
 ```
