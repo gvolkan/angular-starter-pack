@@ -15,13 +15,11 @@ const gulpOpen = require("gulp-open");
 const gulpProtractor = require("gulp-protractor");
 
 const webpack = require('webpack');
-const frontendDevWebpackConfig = require('./tools/frontend/webpack.dev.config.js');
-const frontendProdWebpackConfig = require('./tools/frontend/webpack.prod.config.js');
+const frontendWebpackConfig = require('./tools/frontend/webpack.config.js');
 
 let appServerProcess = null;
 
 gulp.doneCallback = function (err) {
-    //console.log("GULP: Done");
     if (err) {
         console.log("GULP: Error " + JSON.stringify(err));
         process.exit(err ? 1 : 0);
@@ -196,7 +194,7 @@ gulp.task('backend:e2e', function () {
 
 gulp.task("backend_tests:open_coverage", () => {
     gulp.src("./tests/backend/coverage/html/index.html")
-        .pipe(gulpOpen({app: 'firefox'}));
+        .pipe(gulpOpen({ app: 'firefox' }));
 });
 
 // -------------------------------------------------------------------------
@@ -212,19 +210,11 @@ gulp.task('frontend:tslint', () => {
     })).pipe(gulpTSLint.report());
 });
 gulp.task('frontend:webpack', ["frontend:tslint"], function (callback) {
-    if (process.env.NODE_ENV === 'production') {
-        webpack(frontendProdWebpackConfig, function (err, stats) {
-            console.log('GULP: Webpack PROD ', stats.toString({
-            }));
-            callback();
-        });
-    } else {
-        webpack(frontendDevWebpackConfig, function (err, stats) {
-            console.log('GULP: Webpack DEV ', stats.toString({
-            }));
-            callback();
-        });
-    }
+    webpack(frontendWebpackConfig, function (err, stats) {
+        console.log('GULP: Webpack PROD ', stats.toString({
+        }));
+        callback();
+    });
 });
 gulp.task("frontend-html:min_copy", () => {
     const sources = [
@@ -284,7 +274,7 @@ gulp.task('frontend-sass:min_copy', function () {
 
 gulp.task("frontend_tests:open_coverage", () => {
     gulp.src("./tests/frontend/coverage/html/index.html")
-        .pipe(gulpOpen({app: 'firefox'}));
+        .pipe(gulpOpen({ app: 'firefox' }));
 });
 
 // -------------------------------------------------------------------------
